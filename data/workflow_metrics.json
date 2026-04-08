@@ -1,0 +1,11 @@
+{
+  "work_streams": [
+    { "name": "Content Creation", "tasks": ["Research", "Drafting", "Editing", "Distribution"] },
+    { "name": "Software Development", "tasks": ["Planning", "Coding", "Testing", "Deployment"] },
+    { "name": "Project Management", "tasks": ["Scoping", "Scheduling", "Tracking", "Reporting"] },
+    { "name": "Data Analysis", "tasks": ["Cleaning", "Modeling", "Visualizing", "Insight Generation"] },
+    { "name": "Sales Outreach", "tasks": ["Prospecting", "Emailing", "Calling", "Closing"] }
+  ],
+  "productivity_tools": ["Pomodoro Timer", "Kanban Board", "Time Tracker", "Deep Work Mode", "Automation Scripts", "AI Co-pilot"],
+  "work_life_balance_metrics": ["Working Hours", "Break Frequency", "Sleep Quality", "Stress Level", "Meeting Overhead", "Context Switching Cost", "Flow State Duration"]
+}

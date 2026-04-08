@@ -1,0 +1,13 @@
+{
+  "client_stages": [
+    {"stage": "Project Discovery", "tasks": ["Initial Call", "Feasibility Study", "Tech Stack Decision", "Scope Document"]},
+    {"stage": "Onboarding", "tasks": ["Sign Contract", "Gather Requirements", "Setup Slack", "Access to Repos", "Kickoff Meeting"]},
+    {"stage": "Active Development", "tasks": ["Weekly Check-in", "Sprint Review", "UAT"]},
+    {"stage": "Maintenance", "tasks": ["Monthly Backup", "Security Patches", "Support Logs"]}
+  ],
+  "invoice_templates": [
+    {"name": "Time & Materials", "terms": "Net 30", "currency": "USD"},
+    {"name": "Fixed Fee", "terms": "50% Upfront, 50% Delivery", "currency": "USD"},
+    {"name": "Monthly Retainer", "terms": "Due on Receipt", "currency": "USD"}
+  ]
+}
