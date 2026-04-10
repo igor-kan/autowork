@@ -91,11 +91,11 @@ autowork/
 - ESLint for code quality
 
 ## Future Enhancements
-- Performance optimizations
-- Advanced analytics integration
-- Enhanced user experience features
-- API integrations
-- Mobile app development
+- Performance optimizations  *(Sonnet 4.6 | Medium)*  *(Sonnet 4.6 | Medium)*  *(Sonnet 4.6 | Medium)*
+- Advanced analytics integration  *(Sonnet 4.6 | Medium)*  *(Sonnet 4.6 | Medium)*  *(Sonnet 4.6 | Medium)*
+- Enhanced user experience features  *(Sonnet 4.6 | Medium)*  *(Sonnet 4.6 | Medium)*  *(Sonnet 4.6 | Medium)*
+- API integrations  *(Sonnet 4.6 | Medium)*  *(Sonnet 4.6 | Medium)*  *(Sonnet 4.6 | Medium)*
+- Mobile app development  *(Sonnet 4.6 | High)*  *(Sonnet 4.6 | High)*  *(Sonnet 4.6 | High)*
 
 
 

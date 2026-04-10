@@ -1,98 +1,49 @@
-
 import { useState } from "react";
-import { Check, Plus, Settings, Zap, Shield } from "lucide-react";
+import { Check, Plus, Settings, Zap, Shield, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import type { UseIntegrationsResult } from "@/hooks/useIntegrations";
 
-export const IntegrationHub = () => {
+interface IntegrationHubProps {
+  integrationsHook: UseIntegrationsResult;
+}
+
+const CATEGORIES = [
+  "All",
+  "Communication",
+  "CRM",
+  "Email",
+  "Documentation",
+  "Project Management",
+  "File Storage",
+  "Database",
+];
+
+export const IntegrationHub = ({ integrationsHook }: IntegrationHubProps) => {
+  const { integrations, toggleConnection, connectedCount } = integrationsHook;
   const [searchTerm, setSearchTerm] = useState("");
-
-  const integrations = [
-    {
-      name: "Slack",
-      description: "Send messages, create channels, and manage team communication",
-      category: "Communication",
-      status: "connected",
-      icon: "💬",
-      actions: ["Send Message", "Create Channel", "Get User Info"],
-      popularity: 95
-    },
-    {
-      name: "Salesforce",
-      description: "Manage leads, opportunities, and customer relationships",
-      category: "CRM",
-      status: "connected",
-      icon: "☁️",
-      actions: ["Create Lead", "Update Opportunity", "Get Contact"],
-      popularity: 88
-    },
-    {
-      name: "Gmail",
-      description: "Send emails, read messages, and manage your inbox",
-      category: "Email",
-      status: "connected",
-      icon: "✉️",
-      actions: ["Send Email", "Read Messages", "Create Filter"],
-      popularity: 92
-    },
-    {
-      name: "Notion",
-      description: "Create pages, update databases, and manage content",
-      category: "Documentation",
-      status: "available",
-      icon: "📝",
-      actions: ["Create Page", "Update Database", "Search Content"],
-      popularity: 85
-    },
-    {
-      name: "Jira",
-      description: "Create tickets, update issues, and track project progress",
-      category: "Project Management",
-      status: "available",
-      icon: "🎯",
-      actions: ["Create Issue", "Update Status", "Add Comment"],
-      popularity: 78
-    },
-    {
-      name: "HubSpot",
-      description: "Manage contacts, deals, and marketing campaigns",
-      category: "CRM",
-      status: "available",
-      icon: "🚀",
-      actions: ["Create Contact", "Update Deal", "Send Email"],
-      popularity: 82
-    },
-    {
-      name: "Google Drive",
-      description: "Upload files, create folders, and share documents",
-      category: "File Storage",
-      status: "connected",
-      icon: "📁",
-      actions: ["Upload File", "Create Folder", "Share Document"],
-      popularity: 90
-    },
-    {
-      name: "Airtable",
-      description: "Create records, update tables, and manage databases",
-      category: "Database",
-      status: "available",
-      icon: "📊",
-      actions: ["Create Record", "Update Table", "Get Data"],
-      popularity: 75
-    }
-  ];
-
-  const categories = ["All", "Communication", "CRM", "Email", "Documentation", "Project Management", "File Storage", "Database"];
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const filteredIntegrations = integrations.filter(integration => {
-    const matchesSearch = integration.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         integration.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || integration.category === selectedCategory;
+  const filteredIntegrations = integrations.filter((integration) => {
+    const matchesSearch =
+      integration.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      integration.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All" || integration.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handleToggleConnection = (name: string, currentStatus: string) => {
+    toggleConnection(name);
+    if (currentStatus === "connected") {
+      toast.info(`Disconnected from ${name}.`);
+    } else {
+      toast.success(`Connected to ${name}!`);
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -115,7 +66,7 @@ export const IntegrationHub = () => {
           />
         </div>
         <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
+          {CATEGORIES.map((category) => (
             <Button
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}
@@ -133,13 +84,17 @@ export const IntegrationHub = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="border-slate-200">
           <CardContent className="p-6 text-center">
-            <div className="text-2xl font-bold text-emerald-600">{integrations.filter(i => i.status === "connected").length}</div>
+            <div className="text-2xl font-bold text-emerald-600">
+              {connectedCount}
+            </div>
             <div className="text-sm text-slate-600">Connected</div>
           </CardContent>
         </Card>
         <Card className="border-slate-200">
           <CardContent className="p-6 text-center">
-            <div className="text-2xl font-bold text-blue-600">{integrations.length}</div>
+            <div className="text-2xl font-bold text-blue-600">
+              {integrations.length}
+            </div>
             <div className="text-sm text-slate-600">Total Available</div>
           </CardContent>
         </Card>
@@ -153,8 +108,11 @@ export const IntegrationHub = () => {
 
       {/* Integrations Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredIntegrations.map((integration, index) => (
-          <Card key={index} className="border-slate-200 hover:shadow-lg transition-all duration-200 hover:scale-[1.02]">
+        {filteredIntegrations.map((integration) => (
+          <Card
+            key={integration.name}
+            className="border-slate-200 hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
+          >
             <CardHeader className="pb-4">
               <div className="flex items-start justify-between">
                 <div className="flex items-center space-x-3">
@@ -173,15 +131,19 @@ export const IntegrationHub = () => {
                 )}
               </div>
             </CardHeader>
-            
+
             <CardContent className="space-y-4">
-              <p className="text-slate-600 text-sm leading-relaxed">{integration.description}</p>
-              
+              <p className="text-slate-600 text-sm leading-relaxed">
+                {integration.description}
+              </p>
+
               <div className="space-y-2">
-                <div className="text-xs font-medium text-slate-700">Available Actions:</div>
+                <div className="text-xs font-medium text-slate-700">
+                  Available Actions:
+                </div>
                 <div className="flex flex-wrap gap-1">
-                  {integration.actions.slice(0, 3).map((action, i) => (
-                    <Badge key={i} variant="secondary" className="text-xs">
+                  {integration.actions.slice(0, 3).map((action) => (
+                    <Badge key={action} variant="secondary" className="text-xs">
                       {action}
                     </Badge>
                   ))}
@@ -211,12 +173,32 @@ export const IntegrationHub = () => {
                       <Settings className="w-4 h-4 mr-1" />
                       Configure
                     </Button>
-                    <Button size="sm" variant="outline">
-                      Test
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-red-600 hover:text-red-700 hover:border-red-300"
+                      onClick={() =>
+                        handleToggleConnection(
+                          integration.name,
+                          integration.status
+                        )
+                      }
+                    >
+                      <X className="w-4 h-4 mr-1" />
+                      Disconnect
                     </Button>
                   </div>
                 ) : (
-                  <Button size="sm" className="w-full bg-gradient-to-r from-blue-600 to-indigo-600">
+                  <Button
+                    size="sm"
+                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600"
+                    onClick={() =>
+                      handleToggleConnection(
+                        integration.name,
+                        integration.status
+                      )
+                    }
+                  >
                     <Plus className="w-4 h-4 mr-1" />
                     Connect
                   </Button>
